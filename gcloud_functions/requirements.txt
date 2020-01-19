@@ -1,2 +1,5 @@
 # Function dependencies, for example:
 # package>=version
+google-cloud-vision
+google-cloud-storage
+google-cloud-texttospeech
