@@ -3,6 +3,7 @@ import 'package:hack_davis/cameraapp.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 class MyApp extends StatelessWidget {
   final CameraDescription camera;
@@ -35,8 +36,29 @@ class MyApp extends StatelessWidget {
                       )
                     ),
                   );
+                  if (image != null) {
+                    final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(image);
+                    final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                    final VisionText visionText = await textRecognizer.processImage(visionImage);
+                    String text = visionText.text;
+                    for (TextBlock block in visionText.blocks) {
+                      final Rect boundingBox = block.boundingBox;
+                      final List<Offset> cornerPoints = block.cornerPoints;
+                      final String text = block.text;
+                      final List<RecognizedLanguage> languages = block.recognizedLanguages;
+
+                      for (TextLine line in block.lines) {
+                        // Same getters as TextBlock
+                        for (TextElement element in line.elements) {
+                          // Same getters as TextBlock
+                        }
+                      }
+                    }
+                  print(text);
+                  textRecognizer.close();
+                  }
                 },
-                child: Text("take picture")
+                child: Text("Take picture")
               ),
             ],
           )
