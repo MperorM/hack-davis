@@ -8,6 +8,8 @@ from google.cloud import vision
 from google.cloud import storage
 from google.cloud import texttospeech
 
+BUCKET_NAME = 'davishack.appspot.com'
+
 def download_blob(bucket_name, source_blob_name):
     """Downloads a blob from the bucket."""
 
@@ -81,9 +83,8 @@ def create_audio(input):
 
     audio = io.BytesIO(response.audio_content)
 
-    bucket_name = 'davishack.appspot.com'
-    upload_blob(bucket_name, audio, 'lul.mp3')
-    return generate_download_signed_url_v4(bucket_name, 'lul.mp3')
+    upload_blob(BUCKET_NAME, audio, 'lul.mp3')
+    return generate_download_signed_url_v4(BUCKET_NAME, 'lul.mp3')
 
 def analyse_image(request):
     """Responds to any HTTP request.
@@ -95,7 +96,9 @@ def analyse_image(request):
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
 
-    image_uri = 'gs://davishack.appspot.com/p018.png'
+    img_name = request.args.get('image')
+
+    image_uri = f'gs://davishack.appspot.com/{img_name}'
 
     client = vision.ImageAnnotatorClient()
     image = vision.types.Image()
