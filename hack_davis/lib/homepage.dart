@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 
-List<CameraDescription> cameras = [];
-
 class CameraExampleHome extends StatefulWidget {
   @override
   _CameraExampleHomeState createState() {
